@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -409,6 +410,7 @@ public class TransformTest {
 
             // check the destination has no versions for this subject
             SchemaRegistryClient destClient = destSchemaRegistry.getSchemaRegistryClient();
+            Collection<String> allSubjects = destClient.getAllSubjects();        
             List<Integer> destVersions = destClient.getAllVersions(subject);
             assertTrue(destVersions.isEmpty(), "the destination registry starts empty");
 

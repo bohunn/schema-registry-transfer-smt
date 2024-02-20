@@ -69,8 +69,7 @@
         <kafka.version>2.1.0</kafka.version>
         <confluent.version>7.5.1</confluent.version>
         <confluent.patch.version>-cp1</confluent.patch.version>
-        <jackson.version>2.9.7</jackson.version>
-        <jackson.asl.version>1.9.13</jackson.asl.version>
+        <jackson.version>2.16.1</jackson.version>
 
         <spotless.version>1.20.0</spotless.version>
 
@@ -136,7 +135,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
             <version>${jackson.asl.version}</version>
@@ -148,7 +147,7 @@
             <artifactId>jackson-mapper-asl</artifactId>
             <version>${jackson.asl.version}</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency> -->
 
         <dependency>
             <groupId>com.thoughtworks.paranamer</groupId>
