@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.confluent.kafka.schemaregistry.avro.AvroSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.MockSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaMetadata;
@@ -160,8 +161,9 @@ public class SchemaRegistryMock implements BeforeEachCallback, AfterEachCallback
         return this.registerSchema(topic, isKey, schema, new TopicNameStrategy());
     }
 
-    public int registerSchema(final String topic, boolean isKey, final Schema schema, SubjectNameStrategy<Schema> strategy) {
-        return this.register(strategy.subjectName(topic, isKey, schema), schema);
+    public int registerSchema(final String topic, boolean isKey, final Schema schema, SubjectNameStrategy strategy) {
+        AvroSchema parsedSchema = new AvroSchema(schema);
+        return this.register(strategy.subjectName(topic, isKey, parsedSchema), schema);
     }
 
     private int register(final String subject, final Schema schema) {

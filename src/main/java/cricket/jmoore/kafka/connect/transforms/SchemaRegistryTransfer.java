@@ -23,6 +23,7 @@ import org.apache.kafka.connect.transforms.util.SimpleConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.confluent.kafka.schemaregistry.avro.AvroSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
@@ -63,7 +64,7 @@ public class SchemaRegistryTransfer<R extends ConnectRecord<R>> implements Trans
 
     private CachedSchemaRegistryClient sourceSchemaRegistryClient;
     private CachedSchemaRegistryClient destSchemaRegistryClient;
-    private SubjectNameStrategy<org.apache.avro.Schema> subjectNameStrategy;
+    private SubjectNameStrategy subjectNameStrategy;
     private boolean transferKeys, includeHeaders;
 
     // caches from the source registry to the destination registry
@@ -222,7 +223,8 @@ public class SchemaRegistryTransfer<R extends ConnectRecord<R>> implements Trans
                 try {
                     log.trace("Registering schema {} to destination registry", schemaAndDestId.schema);
                     // It could be possible that the destination naming strategy is different from the source
-                    String subjectName = subjectNameStrategy.subjectName(topic, isKey, schemaAndDestId.schema);
+                    AvroSchema parsedSchema = new AvroSchema(schemaAndDestId.schema);
+                    String subjectName = subjectNameStrategy.subjectName(topic, isKey, parsedSchema);
                     schemaAndDestId.id = destSchemaRegistryClient.register(subjectName, schemaAndDestId.schema);
                     schemaCache.put(sourceSchemaId, schemaAndDestId);
                 } catch (IOException | RestClientException e) {
