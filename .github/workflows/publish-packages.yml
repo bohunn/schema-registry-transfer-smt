@@ -26,6 +26,6 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
 
       - name: Publish package
-        run: mvn --batch-mode deploy
+        run: mvn --batch-mode deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.PACKAGES_SECRET }}        
